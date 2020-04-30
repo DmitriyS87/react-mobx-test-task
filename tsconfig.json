@@ -1,0 +1,21 @@
+{
+ "compilerOptions": {
+    "jsx": "react",
+    "outDir": "./dist/",
+    "strict": true,
+    "sourceMap": true,
+    "allowJs": true,
+    "noImplicitAny": true,
+    "module": "es2015",
+    "moduleResolution": "node",
+    "target": "es2015",
+    "noUnusedLocals": true,
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "skipLibCheck": true,
+    "lib": ["es6", "esnext", "dom"]
+ },
+ "include": [
+     "src", "webpack"
+ ]
+}

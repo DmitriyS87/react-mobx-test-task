@@ -1,0 +1,49 @@
+{
+  "name": "react-mobx-typescript-for-alex",
+  "description": "Дмитрий привет\r Вот тестовое задание\r Необходмио создать небольшое приложение SPA.\r Стек: react + mobX +  typescript + в качестве библиотеки UI использовать Ant Design. Компоненты выполнить в виде классов.",
+  "version": "1.0.0",
+  "author": "DmitriyS87 <schukindmitriy@gmail.com> (https://github.com/DmitriyS87)",
+  "license": "ISC",
+  "main": "src/index.tsx",
+  "scripts": {
+    "start": "webpack-dev-server --config webpack/webpack.local.js",
+    "build": "webpack --config webpack/webpack.dev.js --optimize-minimize"
+  },
+  "dependencies": {
+    "axios": "^0.19.2",
+    "compression-webpack-plugin": "^3.1.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "mobx": "^5.15.4",
+    "mobx-react": "^6.2.2",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "typescript": "^3.8.3",
+    "webpack": "^4.43.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.9.6",
+    "@babel/preset-env": "^7.9.6",
+    "@babel/preset-react": "^7.9.4",
+    "@types/react": "^16.9.34",
+    "@typescript-eslint/eslint-plugin": "^2.30.0",
+    "@typescript-eslint/parser": "^2.30.0",
+    "babel-loader": "^8.1.0",
+    "css-loader": "^3.5.3",
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-typescript": "^7.2.1",
+    "eslint-config-prettier": "^6.11.0",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-react": "^7.19.0",
+    "eslint-plugin-react-hooks": "^2.5.0",
+    "file-loader": "^6.0.0",
+    "node-sass": "^4.14.0",
+    "postcss-loader": "^3.0.0",
+    "prettier": "^2.0.5",
+    "sass-loader": "^8.0.2",
+    "ts-loader": "^7.0.2",
+    "webpack-cli": "^3.3.11",
+    "webpack-merge": "^4.2.2"
+  }
+}
