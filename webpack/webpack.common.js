@@ -1,9 +1,17 @@
+/* eslint-disable global-require */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/no-var-requires */
+const webpack = require('webpack');
+
 const path = require(`path`);
+
 const CompressionPlugin = require('compression-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('webpack-cleanup-plugin');
+const Dotenv = require('dotenv-webpack');
+
+const isProduction = process.env.NODE_ENV === 'production';
 
 module.exports = {
   context: __dirname,
@@ -12,6 +20,9 @@ module.exports = {
     path: path.resolve(__dirname, '../dist'),
     filename: '[name]-[hash].js',
     publicPath: '/'
+  },
+  node: {
+    fs: 'empty'
   },
   optimization: {
     noEmitOnErrors: true,
@@ -28,6 +39,7 @@ module.exports = {
     }
   },
   plugins: [
+    new CleanWebpackPlugin(),
     new MiniCssExtractPlugin({
       filename: '[name]-[hash].css',
       chunkFilename: '[id]-[hash].css'
@@ -43,7 +55,8 @@ module.exports = {
       template: path.resolve(__dirname, '../src', 'public', 'index.html'),
       favicon: false,
       hash: true
-    })
+    }),
+    new Dotenv()
   ],
   module: {
     rules: [
@@ -53,19 +66,33 @@ module.exports = {
       },
       {
         test: /\.s?[ac]ss$/,
-        use: [MiniCssExtractPlugin.loader, 'css-loader', 'sass-loader']
+        use: [isProduction ? MiniCssExtractPlugin.loader : 'style-loader', 'css-loader', 'sass-loader']
       },
       {
         test: /\.less$/,
         use: [
-          MiniCssExtractPlugin.loader,
-          {
-            loader: 'style-loader'
-          },
+          isProduction ? MiniCssExtractPlugin.loader : 'style-loader',
           {
             loader: 'css-loader',
             options: {
               importLoaders: 1
+            }
+          },
+          {
+            loader: 'postcss-loader',
+            options: {
+              ident: 'postcss',
+              plugins: [
+                require('postcss-import')({ addDependencyTo: webpack }),
+                require('postcss-url')(),
+                require('postcss-preset-env')({
+                  stage: 2
+                }),
+                require('postcss-reporter')(),
+                require('postcss-browser-reporter')({
+                  disabled: isProduction
+                })
+              ]
             }
           },
           {
@@ -84,12 +111,16 @@ module.exports = {
         exclude: /node_modules/,
         use: [
           {
-            loader: `babel-loader`
+            loader: `babel-loader`,
+            options: {
+              cacheDirectory: true
+            }
           }
         ]
       },
       {
         test: /\.(ts|tsx)$/,
+        exclude: /node_modules/,
         use: [
           {
             loader: 'babel-loader',
@@ -121,11 +152,14 @@ module.exports = {
     ]
   },
   resolve: {
-    modules: ['node_modules'],
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
-      '@constants': path.resolve(__dirname, '../src/constants/')
+      '@constants': path.resolve(__dirname, '../src/constants/index.ts'),
+      '@stores': path.resolve(__dirname, '../src/stores/index.ts'),
+      '@types': path.resolve(__dirname, '../src/types/index.ts'),
+      '@shared': path.resolve(__dirname, '../src/common/shared/index.ts'),
+      moment: 'moment/moment.js'
     }
   },
-  devtool: `source-map`
+  devtool: !isProduction ? 'source-map' : ''
 };

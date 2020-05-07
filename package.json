@@ -1,6 +1,6 @@
 {
   "name": "react-mobx-typescript-for-alex",
-  "description": "Дмитрий привет\r Вот тестовое задание\r Необходмио создать небольшое приложение SPA.\r Стек: react + mobX +  typescript + в качестве библиотеки UI использовать Ant Design. Компоненты выполнить в виде классов.",
+  "description": "Стек: react + mobX +  typescript + в качестве библиотеки UI использовать Ant Design. Компоненты выполнить в виде классов.",
   "version": "1.0.0",
   "author": "DmitriyS87 <schukindmitriy@gmail.com> (https://github.com/DmitriyS87)",
   "license": "ISC",
@@ -9,14 +9,18 @@
     "content": "./dist"
   },
   "scripts": {
-    "start": "webpack-dev-server --config webpack/webpack.local.js",
-    "build": "webpack --config webpack/webpack.dev.js --optimize-minimize",
-    "test:types": "tsc --noEmit"
+    "start": "webpack-dev-server --mode=development --hot --progress --colors --config webpack/webpack.dev.js",
+    "build": "webpack --mode=production --config webpack/webpack.prod.js --optimize-minimize --progress --colors",
+    "tsc": "tsc && babel ./src --out-dir ./dist --extensions '.ts,.js'",
+    "test:types": "tsc --noEmit",
+    "test:import": "tsc --traceResolution"
   },
   "dependencies": {
+    "@ant-design/icons": "^4.1.0",
     "antd": "^4.2.0",
     "axios": "^0.19.2",
     "compression-webpack-plugin": "^3.1.0",
+    "history": "^4.10.1",
     "mini-css-extract-plugin": "^0.9.0",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
@@ -28,9 +32,14 @@
     "webpack": "^4.43.0"
   },
   "devDependencies": {
+    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.6",
+    "@babel/node": "^7.8.7",
+    "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@babel/plugin-proposal-decorators": "^7.8.3",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
+    "@babel/preset-typescript": "^7.9.0",
     "@types/react": "^16.9.34",
     "@types/react-dom": "^16.9.7",
     "@types/react-router": "^5.1.7",
@@ -39,7 +48,9 @@
     "@typescript-eslint/parser": "^2.30.0",
     "babel-loader": "^8.1.0",
     "babel-plugin-import": "^1.13.0",
+    "babel-plugin-module-resolver": "^4.0.0",
     "css-loader": "^3.5.3",
+    "dotenv-webpack": "^1.7.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb-typescript": "^7.2.1",
     "eslint-config-prettier": "^6.11.0",
@@ -53,11 +64,18 @@
     "less": "^3.11.1",
     "less-loader": "^6.0.0",
     "node-sass": "^4.14.0",
+    "postcss-browser-reporter": "^0.6.0",
+    "postcss-import": "^12.0.1",
     "postcss-loader": "^3.0.0",
+    "postcss-preset-env": "^6.7.0",
+    "postcss-reporter": "^6.0.1",
+    "postcss-url": "^8.0.0",
     "prettier": "^2.0.5",
     "sass-loader": "^8.0.2",
     "style-loader": "^1.2.1",
     "ts-loader": "^7.0.2",
+    "tsconfig-paths-webpack-plugin": "^3.2.0",
+    "webpack-cleanup-plugin": "^0.5.1",
     "webpack-cli": "^3.3.11",
     "webpack-dev-server": "^3.10.3",
     "webpack-merge": "^4.2.2"

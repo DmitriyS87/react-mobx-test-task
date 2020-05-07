@@ -3,18 +3,17 @@
 const merge = require('webpack-merge');
 const common = require('./webpack.common.js');
 
-module.exports = merge.smartStrategy({
-  entry: 'replace',
-  plugins: 'append'
-})(common, {
-  mode: 'production',
-  module: {
-    rules: [
-      {
-        enforce: 'pre',
-        test: /\.js$/,
-        loader: 'source-map-loader'
-      }
-    ]
+module.exports = merge(common, {
+  mode: 'development',
+  devtool: 'cheap-module-source-map',
+  devServer: {
+    compress: true,
+    host: '127.0.0.1',
+    port: 8080,
+    historyApiFallback: true
+  },
+  watchOptions: {
+    aggregateTimeout: 300,
+    poll: 1000
   }
 });
