@@ -1,7 +1,7 @@
 {
  "compilerOptions": {
-    "target": "es5",
-    "module": "esnext",
+    "target": "es6",
+    "module": "es6",
     "jsx": "react",
     "strict": true,
     "skipLibCheck": true,
@@ -24,7 +24,9 @@
     "importHelpers": true,
     "paths": {
        "@constants": ["./src/constants/"],
+       "@core/*": ["./src/core/*"],
        "@stores": ["./src/stores/"],
+       "@stores/*": ["./src/stores/*"],
        "@types": ["./src/types/"],
        "@shared": ["./src/common/shared/"],
     },

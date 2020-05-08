@@ -1,8 +1,6 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/no-var-requires */
-const webpack = require('webpack');
-
 const path = require(`path`);
 
 const CompressionPlugin = require('compression-webpack-plugin');
@@ -11,14 +9,15 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('webpack-cleanup-plugin');
 const Dotenv = require('dotenv-webpack');
 
-const isProduction = process.env.NODE_ENV === 'production';
+const isProduction = process.argv.indexOf('-p') >= 0 || process.env.NODE_ENV === 'production';
 
 module.exports = {
   context: __dirname,
-  entry: { app: `../src/index.tsx`, vendor: ['react', 'react-dom'] },
+  entry: { app: `../src/index.tsx` },
   output: {
     path: path.resolve(__dirname, '../dist'),
-    filename: '[name]-[hash].js',
+    filename: isProduction ? '[contenthash].js' : '[hash].js',
+    chunkFilename: isProduction ? '[name]-[contenthash].js' : '[name]-[hash].js',
     publicPath: '/'
   },
   node: {
@@ -32,29 +31,28 @@ module.exports = {
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name: 'libs',
-          chunks: 'all'
+          chunks: 'all',
+          priority: -10,
+          filename: isProduction ? 'vendor-[contenthash].js' : 'vendor-[name]-[hash].js'
         }
       }
     }
   },
   plugins: [
     new CleanWebpackPlugin(),
-    new MiniCssExtractPlugin({
-      filename: '[name]-[hash].css',
-      chunkFilename: '[id]-[hash].css'
-    }),
     new CompressionPlugin({
       filename: '[path].gz[query]',
       algorithm: 'gzip',
-      test: /\.js$|\.css$|\.html$/,
-      threshold: 10240,
-      minRatio: 0.8
+      test: /\.js$|\.css$|\.html$/
+    }),
+    new MiniCssExtractPlugin({
+      filename: isProduction ? '[name]-[contenthash].css' : '[name]-[hash].css',
+      chunkFilename: '[id]-[hash].css',
+      disable: !isProduction
     }),
     new HtmlWebpackPlugin({
-      template: path.resolve(__dirname, '../src', 'public', 'index.html'),
-      favicon: false,
-      hash: true
+      title: 'test task',
+      template: path.resolve(__dirname, '../src', 'public', 'index.html')
     }),
     new Dotenv()
   ],
@@ -76,23 +74,6 @@ module.exports = {
             loader: 'css-loader',
             options: {
               importLoaders: 1
-            }
-          },
-          {
-            loader: 'postcss-loader',
-            options: {
-              ident: 'postcss',
-              plugins: [
-                require('postcss-import')({ addDependencyTo: webpack }),
-                require('postcss-url')(),
-                require('postcss-preset-env')({
-                  stage: 2
-                }),
-                require('postcss-reporter')(),
-                require('postcss-browser-reporter')({
-                  disabled: isProduction
-                })
-              ]
             }
           },
           {
@@ -155,11 +136,11 @@ module.exports = {
     extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
     alias: {
       '@constants': path.resolve(__dirname, '../src/constants/index.ts'),
+      '@core': path.resolve(__dirname, '../src/core/'),
       '@stores': path.resolve(__dirname, '../src/stores/index.ts'),
       '@types': path.resolve(__dirname, '../src/types/index.ts'),
-      '@shared': path.resolve(__dirname, '../src/common/shared/index.ts'),
-      moment: 'moment/moment.js'
+      '@shared': path.resolve(__dirname, '../src/common/shared/index.ts')
     }
   },
-  devtool: !isProduction ? 'source-map' : ''
+  devtool: isProduction ? 'hidden-source-map' : 'cheap-module-source-map'
 };

@@ -5,7 +5,6 @@ const common = require('./webpack.common.js');
 
 module.exports = merge(common, {
   mode: 'development',
-  devtool: 'cheap-module-source-map',
   devServer: {
     compress: true,
     host: '127.0.0.1',

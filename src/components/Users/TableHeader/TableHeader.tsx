@@ -12,14 +12,9 @@ const TableHeader: FunctionComponent = () => {
   return (
     <div className="main">
       <span>
-        <Title>Users list:</Title>
+        <Title level={2}>Users list:</Title>
       </span>
-      <Button
-        disabled={!userId}
-        size="large"
-        type="link"
-        onClick={() => push(`${AppRoute.USERS_POSTS_ROUTE}/${userId}`)}
-      >
+      <Button disabled={!userId} size="large" type="link" onClick={() => push(`${AppRoute.USERS}/${userId}`)}>
         Show comments
       </Button>
     </div>

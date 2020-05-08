@@ -4,9 +4,10 @@ import { observer } from 'mobx-react';
 import { Typography } from 'antd';
 import { Paper } from '@shared';
 import Post from './Post/Post';
+import { PostsProps } from './Posts.interface';
 
 @observer
-class Posts extends PureComponent<Props, State> {
+class Posts extends PureComponent<PostsProps, {}> {
   componentDidMount() {
     const { match } = this.props;
     const { params } = match;
@@ -26,7 +27,7 @@ class Posts extends PureComponent<Props, State> {
 
     return (
       <Paper>
-        <Title>Posts </Title>
+        <Title level={2}>Posts </Title>
         {selectedUser && <Text> made by {`${selectedUser.first_name} ${selectedUser.last_name}`}</Text>}
 
         {posts && (
