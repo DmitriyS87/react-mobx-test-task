@@ -4,12 +4,12 @@ import { Avatar, Table } from 'antd';
 import { UserOutlined } from '@ant-design/icons';
 import { UserLink, ApiUser } from '@stores/users/users.interface';
 import { usersStore } from '@stores';
-import { UsersProps, UsersState, UserPagintaionConfig } from './Users.interface';
+import { UsersState, UserPagintaionConfig } from './Users.interface';
 import TableHeader from './TableHeader/TableHeader';
 
 @observer
-class Users extends Component<UsersProps, UsersState> {
-  constructor(props: UsersProps) {
+class Users extends Component<{}, UsersState> {
+  constructor(props: {}) {
     super(props);
 
     this.onSelectedRowChange = this.onSelectedRowChange.bind(this);

@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { observable, action, computed } from 'mobx';
+import { notification } from 'antd';
 import { getUsers, getUser } from './api-users';
 import { ApiUser } from './users.interface';
 import { DEFAULT_USER_PER_PAGE, DEFAULT_USER_PAGE } from './users.constants';
@@ -30,6 +31,7 @@ class UsersStore {
         this.selectUser('');
 
         if (response.data.result && response.data.result.length) {
+          notification.success({ message: 'Good deal!' });
           this.users = response.data.result;
           const meta = response.data._meta;
           meta &&
@@ -42,10 +44,13 @@ class UsersStore {
           return;
         }
 
-        throw new Error('System error. Data is unavailable');
+        notification.warn({
+          message: 'System error',
+          description: 'Data is unavailable. Please try again later'
+        });
       })
       .catch(err => {
-        console.log(err);
+        notification.error({ message: err });
       })
       .finally(() => {
         this.isLoading = false;
@@ -62,10 +67,13 @@ class UsersStore {
           return;
         }
 
-        throw new Error('System error. Data is unavailable');
+        notification.warn({
+          message: 'System error',
+          description: 'Data is unavailable. Please try again later'
+        });
       })
       .catch(err => {
-        console.log(err);
+        notification.error({ message: err });
       })
       .finally(() => {
         this.isLoading = false;

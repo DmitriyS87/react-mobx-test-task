@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import { observable, action } from 'mobx';
+import { notification } from 'antd';
 import { getUserPosts } from './api-posts';
 import { PostResult } from './posts.interface';
 import { DEFAULT_POSTS_PAGE, DEFAULT_POSTS_PER_PAGE } from './posts.constants';
@@ -31,7 +32,6 @@ class PostsStore {
 
           if (response.data.result && response.data.result.length) {
             this.posts = response.data.result;
-            console.log(response.data.result);
             const meta = response.data._meta;
             meta &&
               (this.paginationResponse = {
@@ -43,10 +43,13 @@ class PostsStore {
             return;
           }
 
-          throw new Error('System error. Data is unavailable');
+          notification.warn({
+            message: 'System error',
+            description: 'Data is unavailable. Please try again later'
+          });
         })
         .catch(err => {
-          console.log(err);
+          notification.error({ message: err });
         })
         .finally(() => {
           this.isLoading = false;

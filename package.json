@@ -11,10 +11,10 @@
   "scripts": {
     "start": "webpack-dev-server --mode=development --hot --progress --colors --config webpack/webpack.dev.js",
     "build": "webpack -p --config webpack/webpack.prod.js --progress --colors",
+    "lint": "eslint --fix src/**/*{.ts,.tsx} -o ./reports/eslint.log -f compact",
     "deploy": "gh-pages -d dist",
     "tsc": "tsc && babel ./src --out-dir ./dist --extensions '.ts,.js'",
-    "test:types": "tsc --noEmit",
-    "test:import": "tsc --traceResolution"
+    "test:types": "tsc --noEmit"
   },
   "dependencies": {
     "@ant-design/icons": "^4.1.0",
