@@ -6,6 +6,6 @@ const common = require('./webpack.common.js');
 module.exports = merge(common, {
   mode: 'production',
   output: {
-    publicPath: '.'
+    publicPath: 'https://dmitriys87.github.io/react-mobx-test-task/'
   }
 });

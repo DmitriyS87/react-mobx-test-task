@@ -31,7 +31,6 @@ class UsersStore {
         this.selectUser('');
 
         if (response.data.result && response.data.result.length) {
-          notification.success({ message: 'Good deal!' });
           this.users = response.data.result;
           const meta = response.data._meta;
           meta &&
