@@ -2,15 +2,15 @@
 import { observable, action, computed } from 'mobx';
 import { notification } from 'antd';
 import { getUsers, getUser } from './api-users';
-import { ApiUser } from './users.interface';
+import { ApiUser, StoredUsers } from './users.interface';
 import { DEFAULT_USER_PER_PAGE, DEFAULT_USER_PAGE } from './users.constants';
 
 class UsersStore {
-  @observable users: ApiUser[] = [];
+  @observable storedUsers: StoredUsers = {};
 
   @observable isLoading = false;
 
-  @observable page = 1;
+  @observable viewedPage = 1;
 
   @observable selectedUserId = '';
 
@@ -24,22 +24,33 @@ class UsersStore {
   @action
   loadUsers(nextPage?: number) {
     this.isLoading = true;
+    const page = nextPage || this.viewedPage;
+
+    if (Object.keys(this.storedUsers).includes(String(page))) {
+      this.paginationResponse = { ...this.paginationResponse, currentPage: page };
+      this.viewedPage = page;
+      this.isLoading = false;
+      return;
+    }
+
     getUsers({
-      page: nextPage || this.page
+      page
     })
       .then(response => {
         this.selectUser('');
 
         if (response.data.result && response.data.result.length) {
-          this.users = response.data.result;
           const meta = response.data._meta;
-          meta &&
-            (this.paginationResponse = {
-              currentPage: meta.currentPage || this.page,
+          if (meta) {
+            this.paginationResponse = {
+              currentPage: meta.currentPage || DEFAULT_USER_PAGE,
               perPage: meta.perPage || DEFAULT_USER_PER_PAGE,
               pageCount: meta.pageCount || 0,
               totalCount: meta.totalCount || 0
-            });
+            };
+          }
+          this.storedUsers = { ...this.storedUsers, [page]: response.data.result };
+          this.viewedPage = meta.currentPage;
           return;
         }
 
@@ -62,7 +73,8 @@ class UsersStore {
     getUser(id)
       .then(response => {
         if (response.data.result) {
-          this.users = [...this.users, response.data.result];
+          const { result } = response.data;
+          this.storedUsers = { ...this.storedUsers, [result.id]: result };
           return;
         }
 
@@ -81,7 +93,7 @@ class UsersStore {
 
   @action
   setPage(page: number) {
-    this.page = page;
+    this.viewedPage = page;
   }
 
   @action
@@ -92,6 +104,10 @@ class UsersStore {
   @computed get selectedUser() {
     const storedUser = this.users.find(user => user.id === this.selectedUserId);
     return storedUser || null;
+  }
+
+  @computed get users(): ApiUser[] {
+    return this.storedUsers[this.viewedPage] || [];
   }
 }
 

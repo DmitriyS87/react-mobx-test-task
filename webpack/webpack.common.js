@@ -1,6 +1,7 @@
 /* eslint-disable global-require */
 /* eslint-disable import/no-extraneous-dependencies */
 /* eslint-disable @typescript-eslint/no-var-requires */
+const webpack = require(`webpack`);
 const path = require(`path`);
 
 const CompressionPlugin = require('compression-webpack-plugin');
@@ -54,6 +55,7 @@ module.exports = {
       title: 'test task',
       template: path.resolve(__dirname, '../src', 'public', 'index.html')
     }),
+    new webpack.DefinePlugin({ 'process.env.NODE_ENV': JSON.stringify(process.env.NODE_ENV) }),
     new Dotenv()
   ],
   module: {

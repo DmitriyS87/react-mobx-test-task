@@ -23,8 +23,18 @@ class MainMenu extends Component<{}, MainMenuState> {
     this.setStateByLocation();
   }
 
+  componentDidUpdate() {
+    const { selected } = this.state;
+    const { pathname } = history.location;
+
+    const menuItemName = getSelectedMenuItem(pathname);
+    selected !== menuItemName && this.setStateByLocation();
+  }
+
   setStateByLocation() {
-    const mainPathName = getMainPathName();
+    const { pathname } = history.location;
+
+    const mainPathName = getMainPathName(pathname);
 
     this.setState({
       selected: getSelectedMenuItem(mainPathName)

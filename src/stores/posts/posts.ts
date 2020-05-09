@@ -30,7 +30,7 @@ class PostsStore {
         .then(response => {
           this.selectPost('');
 
-          if (response.data.result && response.data.result.length) {
+          if (response.data.result && response.data._meta) {
             this.posts = response.data.result;
             const meta = response.data._meta;
             meta &&

@@ -1,5 +1,3 @@
-export interface UsersProps {}
-
 export interface UsersState {
   selectedRowKeys: string[];
 }

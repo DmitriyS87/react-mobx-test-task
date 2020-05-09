@@ -1,13 +1,13 @@
 import { createBrowserHistory } from 'history';
 
-export const history = createBrowserHistory();
+const basename = process.env.NODE_ENV === 'production' ? process.env.SERVER_BASE_URL : '';
+
+export const history = createBrowserHistory({ basename });
 
 history.listen(() => window.scrollTo(0, 0));
 
-export const getMainPathName = () => {
-  const { pathname } = history.location;
-
+export const getMainPathName = (path: string) => {
   // eslint-disable-next-line no-useless-escape
-  const paths = pathname.match(/^[\/](\w+)?/);
-  return paths ? paths[0] : pathname;
+  const paths = path.match(/^[\/](\w+)?/);
+  return paths ? paths[0] : path;
 };

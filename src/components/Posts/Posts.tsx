@@ -28,7 +28,12 @@ class Posts extends PureComponent<PostsProps, {}> {
     return (
       <Paper>
         <Title level={2}>Posts </Title>
-        {selectedUser && <Text> made by {`${selectedUser.first_name} ${selectedUser.last_name}`}</Text>}
+        {selectedUser && (
+          <Text style={{ marginBottom: '20px' }}>
+            {' '}
+            made by {`${selectedUser.first_name} ${selectedUser.last_name}`}
+          </Text>
+        )}
 
         {posts && (
           <>
@@ -37,6 +42,7 @@ class Posts extends PureComponent<PostsProps, {}> {
             ))}
           </>
         )}
+        {!posts.length && <Text>The user has no publications.</Text>}
       </Paper>
     );
   }

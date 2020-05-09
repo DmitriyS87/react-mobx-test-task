@@ -4,17 +4,17 @@
   "version": "1.0.0",
   "author": "DmitriyS87 <schukindmitriy@gmail.com> (https://github.com/DmitriyS87)",
   "license": "ISC",
+  "homepage": "https://dmitriys87.github.io/react-mobx-test-task",
   "main": "index.js",
   "serve": {
     "content": "./dist"
   },
   "scripts": {
-    "start": "webpack-dev-server --mode=development --hot --progress --colors --config webpack/webpack.dev.js",
-    "build": "webpack -p --config webpack/webpack.prod.js --progress --colors",
+    "start": "webpack-dev-server --env.NODE_ENV=development --mode=development --hot --progress --colors --config webpack/webpack.dev.js",
+    "build": "webpack --env.NODE_ENV=production -p --config webpack/webpack.prod.js --progress --colors",
     "lint": "eslint --fix src/**/*{.ts,.tsx} -o ./reports/eslint.log -f compact",
     "deploy": "gh-pages -d dist",
-    "tsc": "tsc && babel ./src --out-dir ./dist --extensions '.ts,.js'",
-    "test:types": "tsc --noEmit"
+    "lint:types": "tsc --noEmit"
   },
   "dependencies": {
     "@ant-design/icons": "^4.1.0",

@@ -21,3 +21,7 @@ export interface ApiUser {
   website: string;
   _links: UserLink;
 }
+
+export interface StoredUsers {
+  [id: string]: ApiUser[];
+}
