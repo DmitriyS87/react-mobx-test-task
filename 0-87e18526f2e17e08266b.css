@@ -21,4 +21,7 @@
 .post-card {
   margin-bottom: 10px;
 }
+.post-card__selected {
+  background-color: #e6f7ff;
+}
 
